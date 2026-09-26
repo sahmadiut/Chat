@@ -4,8 +4,8 @@
     "name": "Anonymous Messaging & Anonymous Chat Telegram Bot",
     "source_prd": "references/PRODUCT_PRD.md",
     "framework_version": "1.0.0",
-    "current_task_id": "TASK-0002",
-    "updated_at": "2026-09-26T13:15:17+00:00"
+    "current_task_id": "TASK-0101",
+    "updated_at": "2026-09-26T13:40:21+00:00"
   },
   "status_definitions": {
     "NOT_STARTED": "Known work that has not started.",
@@ -136,7 +136,7 @@
       "id": "TASK-0002",
       "phase": "PHASE-00",
       "title": "PRD-to-Code Gap Analysis",
-      "status": "READY",
+      "status": "DONE",
       "priority": "P0",
       "dependencies": [
         "TASK-0001"
@@ -156,13 +156,13 @@
         "Risks/blockers and unresolved architectural decisions are recorded."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Reviewed PRD and all 15 phases; GAP_ANALYSIS.md maps coverage and critical invariants to code evidence; RISKS.md and DECISIONS.md updated; evidence-backed partial task statuses recorded."
     },
     {
       "id": "TASK-0101",
       "phase": "PHASE-01",
       "title": "Runtime & Project Skeleton",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P0",
       "dependencies": [
         "TASK-0002"
@@ -179,13 +179,13 @@
         "Production/staging configuration boundaries are explicit."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Entrypoint, env validation, and templates exist; startup and staging/production boundary unverified."
     },
     {
       "id": "TASK-0102",
       "phase": "PHASE-01",
       "title": "PostgreSQL & Redis Foundations",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P0",
       "dependencies": [
         "TASK-0101"
@@ -202,13 +202,13 @@
         "No critical durable state exists only in memory."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Drizzle/PostgreSQL and Redis adapters exist; clean migrations and failure safety absent."
     },
     {
       "id": "TASK-0103",
       "phase": "PHASE-01",
       "title": "User Identity & Registration",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P0",
       "dependencies": [
         "TASK-0102"
@@ -225,7 +225,7 @@
         "last_activity_at reflects bot interaction, not Telegram last-seen."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Telegram user upsert exists; identity history, registration metadata, and bot activity absent."
     },
     {
       "id": "TASK-0104",
@@ -276,7 +276,7 @@
       "id": "TASK-0106",
       "phase": "PHASE-01",
       "title": "Localization Foundation",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P1",
       "dependencies": [
         "TASK-0101"
@@ -291,7 +291,7 @@
         "RTL/mixed-text constraints are documented for testing."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Fluent English/Persian locales exist; full string coverage and RTL validation incomplete."
     },
     {
       "id": "TASK-0201",
@@ -1048,7 +1048,7 @@
       "id": "TASK-0804",
       "phase": "PHASE-08",
       "title": "Rate Limits & Flood Control",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P1",
       "dependencies": [
         "TASK-0102"
@@ -1062,7 +1062,7 @@
         "Limits are configurable."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Generic grammY rate limiter exists; anonymous/chat/search/referral limits and configurable cooldowns absent."
     },
     {
       "id": "TASK-0805",
@@ -1088,7 +1088,7 @@
       "id": "TASK-0901",
       "phase": "PHASE-09",
       "title": "Admin Authentication & RBAC",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P0",
       "dependencies": [
         "TASK-0103"
@@ -1103,7 +1103,7 @@
         "Main and secondary privileges are distinguishable."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Telegram ID allowlist guards current admin composer; granular secondary RBAC absent."
     },
     {
       "id": "TASK-0902",
@@ -1196,7 +1196,7 @@
       "id": "TASK-0906",
       "phase": "PHASE-09",
       "title": "Admin Notes & Audit Log",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P0",
       "dependencies": [
         "TASK-0901"
@@ -1210,13 +1210,13 @@
         "Search/view/export/location/coin/moderation/config actions can be audited as required."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Admin log table/service records selected mutations; notes and sensitive read/export audit absent."
     },
     {
       "id": "TASK-0907",
       "phase": "PHASE-09",
       "title": "Broadcast & Statistics",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P2",
       "dependencies": [
         "TASK-0901",
@@ -1232,7 +1232,7 @@
         "Statistics have defined source queries/aggregation."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Generic broadcast queue and statistics view exist; product segmentation and delivery-state criteria unverified."
     },
     {
       "id": "TASK-1001",
@@ -1282,7 +1282,7 @@
       "id": "TASK-1003",
       "phase": "PHASE-10",
       "title": "Background Workers & Retries",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P1",
       "dependencies": [
         "TASK-0102"
@@ -1297,7 +1297,7 @@
         "Retries are idempotent."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "BullMQ broadcast/notification workers and retries exist; product jobs and idempotent retry policy absent."
     },
     {
       "id": "TASK-1004",
@@ -1347,7 +1347,7 @@
       "id": "TASK-1101",
       "phase": "PHASE-11",
       "title": "Structured Logging",
-      "status": "NOT_STARTED",
+      "status": "PARTIAL",
       "priority": "P1",
       "dependencies": [
         "TASK-0101"
@@ -1362,7 +1362,7 @@
         "Failures have traceable context."
       ],
       "blocker": "",
-      "last_note": ""
+      "last_note": "Pino structured logs exist but generic logging duplicates private text and payload."
     },
     {
       "id": "TASK-1102",

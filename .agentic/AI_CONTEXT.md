@@ -7,8 +7,8 @@
 - **Product:** Anonymous Messaging & Anonymous Chat Telegram Bot
 - **Platform:** Telegram Bot only
 - **Core product:** Personal anonymous inbox + anonymous matchmaking chat
-- **Task progress:** 1/78 complete/skipped
-- **Current task:** `TASK-0002` — PRD-to-Code Gap Analysis (READY)
+- **Task progress:** 2/78 complete/skipped
+- **Current task:** `TASK-0101` — Runtime & Project Skeleton (PARTIAL)
 
 ## Non-Negotiable Rules
 
@@ -26,40 +26,41 @@
 
 ## Current Work
 
-**TASK-0002 — PRD-to-Code Gap Analysis**
+**TASK-0101 — Runtime & Project Skeleton**
 
-Compare the verified repository state against the product/technical PRD and convert findings into an evidence-based implementation plan.
+Establish or validate the Telegram bot application skeleton, configuration loading, update entrypoint, and environment separation.
 
 Required outputs:
-- `GAP_ANALYSIS.md`
-- `RISKS.md`
-- `DECISIONS.md`
-- `state/project_state.json`
+- `bot runtime`
+- `configuration layer`
+- `environment templates`
 
 ## Next Eligible Tasks
 
-- `TASK-0002` — PRD-to-Code Gap Analysis [READY, P0] (current)
+- `TASK-0101` — Runtime & Project Skeleton [PARTIAL, P0] (current)
 
 ## Planned After Current Task
 
-- `TASK-0101` — Runtime & Project Skeleton [P0]
+- `TASK-0102` — PostgreSQL & Redis Foundations [P0]
+- `TASK-0106` — Localization Foundation [P1]
+- `TASK-1101` — Structured Logging [P1]
 
 ## Phase Progress
 
 | Phase | Done | Active/Partial/Review/Blocked | Total |
 |---|---:|---:|---:|
-| PHASE-00 — Discovery & Baseline | 1 | 0 | 2 |
-| PHASE-01 — Foundation, Identity & Runtime | 0 | 0 | 6 |
+| PHASE-00 — Discovery & Baseline | 2 | 0 | 2 |
+| PHASE-01 — Foundation, Identity & Runtime | 0 | 4 | 6 |
 | PHASE-02 — Profiles & User Settings | 0 | 0 | 5 |
 | PHASE-03 — Anonymous Links & Inbox | 0 | 0 | 6 |
 | PHASE-04 — Matchmaking Core | 0 | 0 | 6 |
 | PHASE-05 — Live Chat & Session Lifecycle | 0 | 0 | 6 |
 | PHASE-06 — Deletion & Retention | 0 | 0 | 4 |
 | PHASE-07 — Coins, Rewards & Referrals | 0 | 0 | 5 |
-| PHASE-08 — Moderation & Anti-Abuse | 0 | 0 | 5 |
-| PHASE-09 — Admin, Archive, Export & Operations UI | 0 | 0 | 7 |
-| PHASE-10 — Security, Concurrency & Reliability | 0 | 0 | 5 |
-| PHASE-11 — Observability, Configuration & Analytics | 0 | 0 | 6 |
+| PHASE-08 — Moderation & Anti-Abuse | 0 | 1 | 5 |
+| PHASE-09 — Admin, Archive, Export & Operations UI | 0 | 3 | 7 |
+| PHASE-10 — Security, Concurrency & Reliability | 0 | 1 | 5 |
+| PHASE-11 — Observability, Configuration & Analytics | 0 | 1 | 6 |
 | PHASE-12 — Phase 2 Product Enhancements | 0 | 0 | 5 |
 | PHASE-13 — Phase 3 Growth & Monetization | 0 | 0 | 5 |
 | PHASE-14 — Production Readiness & Acceptance | 0 | 0 | 5 |

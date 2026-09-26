@@ -23,3 +23,10 @@
 | R-012 | High | Incoming text/payload is copied to Pino, per-user logs and PostgreSQL | `src/bot/middlewares/logger.middleware.ts` | Define private-content logging policy before adding inbox/chat relay |
 | R-013 | High | Startup forces schema push and may alter production schema without migration review | `src/database/index.ts` | Replace with controlled migrations for production |
 | R-014 | Medium | No checked-in migration or backup/deployment artifacts | `drizzle.config.ts`, repository tree | Define migration, backup and recovery process |
+| R-015 | High | Startup executes forced schema push, which can change a production schema without reviewed migrations | `src/database/index.ts` | Remove from production startup and establish migration baseline in TASK-0102 |
+| R-016 | High | Basic admin allowlist/audit does not cover granular roles or sensitive archive reads/exports | `src/bot/filters/admin.filter.ts`, `src/bot/features/admin/admin.command.ts` | Define permissions and audit coverage in TASK-0901/0906 |
+| R-017 | High | Generic messages table cannot identify both Telegram copies or the exact peer session | `src/database/schema/messages.ts`, `conversations.ts` | Add session/copy registries before relay/deletion in TASK-0501/0503 |
+| R-018 | Medium | CI omits Vitest and there is no clean-database/Redis integration test harness | `.github/workflows/ci.yml`, `vitest.config.ts` | Add targeted integration/acceptance gates as product models land |
+| R-019 | Medium | Queue workers run with the bot process; deployment and crash recovery are unverified | `src/queue/`, `src/main.ts` | Define worker topology and retry/idempotency policy in TASK-1003/1004 |
+
+No task is currently blocked. Live PostgreSQL, Redis, Telegram startup, restore behavior, and deployment topology remain unverified; these are validation work for their owning implementation tasks rather than evidence that the services fail.

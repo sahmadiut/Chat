@@ -1,28 +1,28 @@
 # Task Board
 
-**Updated:** 2026-09-26T13:15:17+00:00
+**Updated:** 2026-09-26T13:40:21+00:00
 
 ## PHASE-00 — Discovery & Baseline
 
-Progress: **1/2 complete**, 0 active/partial/review/blocked.
+Progress: **2/2 complete**, 0 active/partial/review/blocked.
 
 | Task | Status | Priority | Title | Dependencies |
 |---|---|---|---|---|
 | `TASK-0001` | **DONE** | P0 | Repository Reconnaissance | — |
-| `TASK-0002` | **READY** ← CURRENT | P0 | PRD-to-Code Gap Analysis | TASK-0001 |
+| `TASK-0002` | **DONE** | P0 | PRD-to-Code Gap Analysis | TASK-0001 |
 
 ## PHASE-01 — Foundation, Identity & Runtime
 
-Progress: **0/6 complete**, 0 active/partial/review/blocked.
+Progress: **0/6 complete**, 4 active/partial/review/blocked.
 
 | Task | Status | Priority | Title | Dependencies |
 |---|---|---|---|---|
-| `TASK-0101` | **NOT_STARTED** | P0 | Runtime & Project Skeleton | TASK-0002 |
-| `TASK-0102` | **NOT_STARTED** | P0 | PostgreSQL & Redis Foundations | TASK-0101 |
-| `TASK-0103` | **NOT_STARTED** | P0 | User Identity & Registration | TASK-0102 |
+| `TASK-0101` | **PARTIAL** ← CURRENT | P0 | Runtime & Project Skeleton | TASK-0002 |
+| `TASK-0102` | **PARTIAL** | P0 | PostgreSQL & Redis Foundations | TASK-0101 |
+| `TASK-0103` | **PARTIAL** | P0 | User Identity & Registration | TASK-0102 |
 | `TASK-0104` | **NOT_STARTED** | P0 | Terms, Privacy & Age Gate | TASK-0103 |
 | `TASK-0105` | **NOT_STARTED** | P0 | Explicit State Machine & Routing | TASK-0103 |
-| `TASK-0106` | **NOT_STARTED** | P1 | Localization Foundation | TASK-0101 |
+| `TASK-0106` | **PARTIAL** | P1 | Localization Foundation | TASK-0101 |
 
 ## PHASE-02 — Profiles & User Settings
 
@@ -100,49 +100,49 @@ Progress: **0/5 complete**, 0 active/partial/review/blocked.
 
 ## PHASE-08 — Moderation & Anti-Abuse
 
-Progress: **0/5 complete**, 0 active/partial/review/blocked.
+Progress: **0/5 complete**, 1 active/partial/review/blocked.
 
 | Task | Status | Priority | Title | Dependencies |
 |---|---|---|---|---|
 | `TASK-0801` | **NOT_STARTED** | P0 | Unified Blocking Model | TASK-0403, TASK-0305 |
 | `TASK-0802` | **NOT_STARTED** | P0 | Reports & Evidence Precision | TASK-0305, TASK-0503 |
 | `TASK-0803` | **NOT_STARTED** | P0 | Warnings, Restrictions & Bans | TASK-0802 |
-| `TASK-0804` | **NOT_STARTED** | P1 | Rate Limits & Flood Control | TASK-0102 |
+| `TASK-0804` | **PARTIAL** | P1 | Rate Limits & Flood Control | TASK-0102 |
 | `TASK-0805` | **NOT_STARTED** | P2 | Risk Signals & Abuse Detection Hooks | TASK-0802, TASK-0804 |
 
 ## PHASE-09 — Admin, Archive, Export & Operations UI
 
-Progress: **0/7 complete**, 0 active/partial/review/blocked.
+Progress: **0/7 complete**, 3 active/partial/review/blocked.
 
 | Task | Status | Priority | Title | Dependencies |
 |---|---|---|---|---|
-| `TASK-0901` | **NOT_STARTED** | P0 | Admin Authentication & RBAC | TASK-0103 |
+| `TASK-0901` | **PARTIAL** | P0 | Admin Authentication & RBAC | TASK-0103 |
 | `TASK-0902` | **NOT_STARTED** | P1 | Admin User Search & User Page | TASK-0901, TASK-0203 |
 | `TASK-0903` | **NOT_STARTED** | P0 | Admin Session & Message Archive | TASK-0902, TASK-0503, TASK-0604 |
 | `TASK-0904` | **NOT_STARTED** | P1 | Admin Anonymous Archive | TASK-0902, TASK-0304 |
 | `TASK-0905` | **NOT_STARTED** | P0 | Exports | TASK-0903 |
-| `TASK-0906` | **NOT_STARTED** | P0 | Admin Notes & Audit Log | TASK-0901 |
-| `TASK-0907` | **NOT_STARTED** | P2 | Broadcast & Statistics | TASK-0901, TASK-1103 |
+| `TASK-0906` | **PARTIAL** | P0 | Admin Notes & Audit Log | TASK-0901 |
+| `TASK-0907` | **PARTIAL** | P2 | Broadcast & Statistics | TASK-0901, TASK-1103 |
 
 ## PHASE-10 — Security, Concurrency & Reliability
 
-Progress: **0/5 complete**, 0 active/partial/review/blocked.
+Progress: **0/5 complete**, 1 active/partial/review/blocked.
 
 | Task | Status | Priority | Title | Dependencies |
 |---|---|---|---|---|
 | `TASK-1001` | **NOT_STARTED** | P0 | Callback & Ownership Security | TASK-0105, TASK-0901 |
 | `TASK-1002` | **NOT_STARTED** | P0 | Concurrency & Transaction Review | TASK-0404, TASK-0703, TASK-0603 |
-| `TASK-1003` | **NOT_STARTED** | P1 | Background Workers & Retries | TASK-0102 |
+| `TASK-1003` | **PARTIAL** | P1 | Background Workers & Retries | TASK-0102 |
 | `TASK-1004` | **NOT_STARTED** | P0 | Redis/Restart Failure Safety | TASK-0402, TASK-0506 |
 | `TASK-1005` | **NOT_STARTED** | P0 | Secrets, Backups & Access Controls | TASK-0102 |
 
 ## PHASE-11 — Observability, Configuration & Analytics
 
-Progress: **0/6 complete**, 0 active/partial/review/blocked.
+Progress: **0/6 complete**, 1 active/partial/review/blocked.
 
 | Task | Status | Priority | Title | Dependencies |
 |---|---|---|---|---|
-| `TASK-1101` | **NOT_STARTED** | P1 | Structured Logging | TASK-0101 |
+| `TASK-1101` | **PARTIAL** | P1 | Structured Logging | TASK-0101 |
 | `TASK-1102` | **NOT_STARTED** | P1 | Monitoring & Health Checks | TASK-1101, TASK-1003 |
 | `TASK-1103` | **NOT_STARTED** | P1 | System Configuration & Feature Flags | TASK-0906 |
 | `TASK-1104` | **NOT_STARTED** | P2 | Analytics Events | TASK-0103 |

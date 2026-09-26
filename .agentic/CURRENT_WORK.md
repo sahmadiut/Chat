@@ -1,36 +1,35 @@
 # Current Work
 
-## TASK-0002 — PRD-to-Code Gap Analysis
+## TASK-0101 — Runtime & Project Skeleton
 
-- **Phase:** PHASE-00
-- **Status:** READY
+- **Phase:** PHASE-01
+- **Status:** PARTIAL
 - **Priority:** P0
-- **Dependencies:** TASK-0001
+- **Dependencies:** TASK-0002
 - **Blocker:** None
-- **Last note:** None
+- **Last note:** Entrypoint, env validation, and templates exist; startup and staging/production boundary unverified.
 
 ## Objective
 
-Compare the verified repository state against the product/technical PRD and convert findings into an evidence-based implementation plan.
+Establish or validate the Telegram bot application skeleton, configuration loading, update entrypoint, and environment separation.
 
 ## Required Outputs
 
-- `GAP_ANALYSIS.md`
-- `RISKS.md`
-- `DECISIONS.md`
-- `state/project_state.json`
+- `bot runtime`
+- `configuration layer`
+- `environment templates`
 
 ## Acceptance Criteria
 
-- [ ] Every implementation phase has an Implemented/Partial/Missing/Unknown assessment.
-- [ ] Critical PRD invariants are checked explicitly.
-- [ ] Existing task statuses are updated only when code evidence supports the change.
-- [ ] The next recommended implementation task is selected.
-- [ ] Risks/blockers and unresolved architectural decisions are recorded.
+- [ ] Bot starts in a development environment.
+- [ ] Secrets are not committed.
+- [ ] Production/staging configuration boundaries are explicit.
 
 ## Planned After This Task
 
-- `TASK-0101` — Runtime & Project Skeleton [P0]
+- `TASK-0102` — PostgreSQL & Redis Foundations [P0]
+- `TASK-0106` — Localization Foundation [P1]
+- `TASK-1101` — Structured Logging [P1]
 
 ## Immediate Execution Order
 
