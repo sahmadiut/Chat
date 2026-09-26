@@ -21,11 +21,19 @@ function check(overrides: Record<string, string>) {
 
 describe('deployment configuration', () => {
   it('accepts local development polling', () => {
-    expect(check({ APP_ENV: 'development', NODE_ENV: 'development', BOT_MODE: 'polling' }).status).toBe(0);
+    expect(
+      check({ APP_ENV: 'development', NODE_ENV: 'development', BOT_MODE: 'polling' }).status,
+    ).toBe(0);
   });
 
   it.each(['staging', 'production'])('accepts isolated %s webhook configuration', (appEnv) => {
-    const result = check({ APP_ENV: appEnv, NODE_ENV: 'production', BOT_MODE: 'webhook', WEBHOOK_URL: 'https://bot.example.com', WEBHOOK_SECRET: 'test-secret' });
+    const result = check({
+      APP_ENV: appEnv,
+      NODE_ENV: 'production',
+      BOT_MODE: 'webhook',
+      WEBHOOK_URL: 'https://bot.example.com',
+      WEBHOOK_SECRET: 'test-secret',
+    });
     expect(result.status, result.output).toBe(0);
   });
 
@@ -42,7 +50,13 @@ describe('deployment configuration', () => {
   });
 
   it('rejects HTTP webhook URLs in production', () => {
-    const result = check({ APP_ENV: 'production', NODE_ENV: 'production', BOT_MODE: 'webhook', WEBHOOK_URL: 'http://bot.example.com', WEBHOOK_SECRET: 'test-secret' });
+    const result = check({
+      APP_ENV: 'production',
+      NODE_ENV: 'production',
+      BOT_MODE: 'webhook',
+      WEBHOOK_URL: 'http://bot.example.com',
+      WEBHOOK_SECRET: 'test-secret',
+    });
     expect(result.status).toBe(1);
     expect(result.output).toContain('HTTPS');
   });

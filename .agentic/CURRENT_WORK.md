@@ -3,11 +3,11 @@
 ## TASK-0101 — Runtime & Project Skeleton
 
 - **Phase:** PHASE-01
-- **Status:** PARTIAL
+- **Status:** BLOCKED
 - **Priority:** P0
 - **Dependencies:** TASK-0002
-- **Blocker:** None
-- **Last note:** Development polling entrypoint verified with controlled external service stand-ins; 169 tests, build, typecheck, and lint pass. Live startup still requires PostgreSQL, Redis, and Telegram credentials, unavailable locally.
+- **Blocker:** Live development startup requires a Telegram bot token and reachable PostgreSQL/Redis; none are configured locally (required environment variables absent, ports 5432/6379 closed).
+- **Last note:** Live development startup requires a Telegram bot token and reachable PostgreSQL/Redis; none are configured locally (required environment variables absent, ports 5432/6379 closed).
 
 ## Objective
 

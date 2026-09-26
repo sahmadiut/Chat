@@ -10,7 +10,13 @@ vi.mock('@grammyjs/runner', () => ({
 }));
 
 vi.mock('#root/config/env.js', () => ({
-  env: { BOT_MODE: 'polling', NODE_ENV: 'development', APP_ENV: 'development', LOG_LEVEL: 'info', DEFAULT_LANGUAGE: 'en' },
+  env: {
+    BOT_MODE: 'polling',
+    NODE_ENV: 'development',
+    APP_ENV: 'development',
+    LOG_LEVEL: 'info',
+    DEFAULT_LANGUAGE: 'en',
+  },
   getAdminIds: () => [123],
   isPolling: true,
   isWebhook: false,
@@ -19,17 +25,25 @@ vi.mock('#root/config/env.js', () => ({
 vi.mock('#root/bot/bot.js', () => ({
   bot: {
     botInfo: { id: 1, username: 'test_bot' },
-    init: async () => { calls.push('bot.init'); },
+    init: async () => {
+      calls.push('bot.init');
+    },
     api: {
-      setMyCommands: async () => { calls.push('commands'); },
-      deleteWebhook: async () => { calls.push('webhook.delete'); },
+      setMyCommands: async () => {
+        calls.push('commands');
+      },
+      deleteWebhook: async () => {
+        calls.push('webhook.delete');
+      },
     },
   },
 }));
 
 vi.mock('#root/bot/commands.js', () => ({ getBotCommands: () => [] }));
 vi.mock('#root/database/index.js', () => ({
-  ensureDatabase: async () => { calls.push('database.ready'); },
+  ensureDatabase: async () => {
+    calls.push('database.ready');
+  },
   closeDatabase: async () => {},
 }));
 vi.mock('#root/cache/index.js', () => ({ closeRedis: async () => {} }));
@@ -39,7 +53,9 @@ vi.mock('#root/utils/logger.js', () => ({
 }));
 
 describe('development runtime entrypoint', () => {
-  beforeEach(() => { calls.length = 0; });
+  beforeEach(() => {
+    calls.length = 0;
+  });
 
   it('starts polling after database, bot, and commands are ready', async () => {
     await import('./main.js');

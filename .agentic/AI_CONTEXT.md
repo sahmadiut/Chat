@@ -8,7 +8,7 @@
 - **Platform:** Telegram Bot only
 - **Core product:** Personal anonymous inbox + anonymous matchmaking chat
 - **Task progress:** 2/78 complete/skipped
-- **Current task:** `TASK-0101` — Runtime & Project Skeleton (PARTIAL)
+- **Current task:** `TASK-0101` — Runtime & Project Skeleton (BLOCKED)
 
 ## Non-Negotiable Rules
 
@@ -35,9 +35,11 @@ Required outputs:
 - `configuration layer`
 - `environment templates`
 
+**Blocker:** Live development startup requires a Telegram bot token and reachable PostgreSQL/Redis; none are configured locally (required environment variables absent, ports 5432/6379 closed).
+
 ## Next Eligible Tasks
 
-- `TASK-0101` — Runtime & Project Skeleton [PARTIAL, P0] (current)
+- None while the current task is active.
 
 ## Planned After Current Task
 
@@ -67,7 +69,7 @@ Required outputs:
 
 ## Active Blockers
 
-- None recorded.
+- `TASK-0101` — Live development startup requires a Telegram bot token and reachable PostgreSQL/Redis; none are configured locally (required environment variables absent, ports 5432/6379 closed).
 
 ## Files to Read
 

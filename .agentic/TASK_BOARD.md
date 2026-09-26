@@ -1,6 +1,6 @@
 # Task Board
 
-**Updated:** 2026-09-26T14:02:23+00:00
+**Updated:** 2026-09-26T14:08:03+00:00
 
 ## PHASE-00 — Discovery & Baseline
 
@@ -17,7 +17,7 @@ Progress: **0/6 complete**, 4 active/partial/review/blocked.
 
 | Task | Status | Priority | Title | Dependencies |
 |---|---|---|---|---|
-| `TASK-0101` | **PARTIAL** ← CURRENT | P0 | Runtime & Project Skeleton | TASK-0002 |
+| `TASK-0101` | **BLOCKED** ← CURRENT | P0 | Runtime & Project Skeleton | TASK-0002 |
 | `TASK-0102` | **PARTIAL** | P0 | PostgreSQL & Redis Foundations | TASK-0101 |
 | `TASK-0103` | **PARTIAL** | P0 | User Identity & Registration | TASK-0102 |
 | `TASK-0104` | **NOT_STARTED** | P0 | Terms, Privacy & Age Gate | TASK-0103 |

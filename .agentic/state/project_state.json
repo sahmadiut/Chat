@@ -5,7 +5,7 @@
     "source_prd": "references/PRODUCT_PRD.md",
     "framework_version": "1.0.0",
     "current_task_id": "TASK-0101",
-    "updated_at": "2026-09-26T14:02:23+00:00"
+    "updated_at": "2026-09-26T14:08:03+00:00"
   },
   "status_definitions": {
     "NOT_STARTED": "Known work that has not started.",
@@ -162,7 +162,7 @@
       "id": "TASK-0101",
       "phase": "PHASE-01",
       "title": "Runtime & Project Skeleton",
-      "status": "PARTIAL",
+      "status": "BLOCKED",
       "priority": "P0",
       "dependencies": [
         "TASK-0002"
@@ -178,8 +178,8 @@
         "Secrets are not committed.",
         "Production/staging configuration boundaries are explicit."
       ],
-      "blocker": "",
-      "last_note": "Development polling entrypoint verified with controlled external service stand-ins; 169 tests, build, typecheck, and lint pass. Live startup still requires PostgreSQL, Redis, and Telegram credentials, unavailable locally."
+      "blocker": "Live development startup requires a Telegram bot token and reachable PostgreSQL/Redis; none are configured locally (required environment variables absent, ports 5432/6379 closed).",
+      "last_note": "Live development startup requires a Telegram bot token and reachable PostgreSQL/Redis; none are configured locally (required environment variables absent, ports 5432/6379 closed)."
     },
     {
       "id": "TASK-0102",
