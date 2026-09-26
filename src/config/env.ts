@@ -83,6 +83,9 @@ const envSchema = z
     /** Node environment */
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
+    /** Deployment boundary; staging and production use separate credentials and data stores. */
+    APP_ENV: z.enum(['development', 'staging', 'production']).default('development'),
+
     /** Pino log level */
     LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 
@@ -121,7 +124,28 @@ const envSchema = z
       message: 'WEBHOOK_SECRET is required when BOT_MODE is "webhook" (security best practice)',
       path: ['WEBHOOK_SECRET'],
     },
-  );
+  )
+  .superRefine((data, ctx) => {
+    if (data.APP_ENV === 'development') {
+      if (data.NODE_ENV === 'production') {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['APP_ENV'], message: 'NODE_ENV=production requires APP_ENV=staging or production' });
+      }
+      return;
+    }
+
+    if (data.NODE_ENV !== 'production') {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['NODE_ENV'], message: 'Staging and production require NODE_ENV=production' });
+    }
+    if (data.BOT_MODE !== 'webhook') {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['BOT_MODE'], message: 'Staging and production require webhook mode' });
+    }
+    for (const key of ['WEBHOOK_URL', 'WEB_APP_URL'] as const) {
+      const value = data[key];
+      if (value && !value.startsWith('https://')) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: [key], message: `${key} must use HTTPS outside development` });
+      }
+    }
+  });
 
 /** Inferred TypeScript type for the validated environment */
 export type Env = z.infer<typeof envSchema>;

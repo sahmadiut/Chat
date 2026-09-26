@@ -7,7 +7,7 @@
 - **Priority:** P0
 - **Dependencies:** TASK-0002
 - **Blocker:** None
-- **Last note:** Entrypoint, env validation, and templates exist; startup and staging/production boundary unverified.
+- **Last note:** Development polling entrypoint verified with controlled external service stand-ins; 169 tests, build, typecheck, and lint pass. Live startup still requires PostgreSQL, Redis, and Telegram credentials, unavailable locally.
 
 ## Objective
 

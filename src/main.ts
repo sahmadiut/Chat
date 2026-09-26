@@ -96,6 +96,7 @@ async function main(): Promise<void> {
     {
       mode: env.BOT_MODE,
       environment: env.NODE_ENV,
+      deployment: env.APP_ENV,
       logLevel: env.LOG_LEVEL,
     },
     '🚀 Starting Telegram bot...',

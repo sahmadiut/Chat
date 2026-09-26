@@ -6,6 +6,10 @@
 
 `src/main.ts` loads validated environment, calls `ensureDatabase()`, initializes grammY, registers commands and starts polling (`@grammyjs/runner`) or Fastify webhook (`src/server/webhook.ts`). Shutdown closes runner/server, BullMQ workers/queues, Redis and PostgreSQL.
 
+`src/main.test.ts` verifies this development polling startup order with controlled external service stand-ins. A live startup with PostgreSQL, Redis, and Telegram remains unverified.
+
+`APP_ENV` identifies the deployment boundary. Staging and production use webhook mode with HTTPS URLs and Node production mode. The repository provides separate credential-free configuration templates for those environments; operators must supply distinct external credentials and data stores.
+
 ```text
 Telegram Bot API -> runner polling or Fastify webhook -> grammY bot
   -> rate limit -> sanitizer -> logger -> Redis session -> i18n

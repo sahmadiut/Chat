@@ -235,6 +235,7 @@ locales/                      # i18n translation files (en.ftl, fa.ftl)
 | `DATABASE_URL` | Yes | — | PostgreSQL connection URL |
 | `REDIS_URL` | No | `redis://localhost:6379` | Redis connection URL |
 | `NODE_ENV` | No | `development` | `development`, `production`, or `test` |
+| `APP_ENV` | No | `development` | Deployment boundary: `development`, `staging`, or `production` |
 | `LOG_LEVEL` | No | `info` | Pino log level (`fatal`, `error`, `warn`, `info`, `debug`, `trace`) |
 | `LOG_DIR` | No | `logs` | Directory for log files |
 | `UPLOAD_DIR` | No | `uploads` | Directory for uploaded files |
@@ -307,6 +308,16 @@ The path alias `#root` is configured in `vitest.config.ts`. Test timeout is 10 s
 
 ## Deployment
 
+Use `.env.example` for local development. Use `.env.staging.example` and
+`.env.production.example` as templates for separate deployments. Supply real
+values through each deployment's secret store or an untracked `.env` file;
+the template values are placeholders. Staging and production must have distinct
+bot tokens, webhook hosts, PostgreSQL databases, Redis instances, and secrets.
+Set `APP_ENV` to the matching environment. The configuration rejects staging
+or production unless `NODE_ENV=production`, `BOT_MODE=webhook`, and public URLs
+use HTTPS. It also rejects `NODE_ENV=production` with the default development
+boundary. Run one environment per process; don't share a `.env` across them.
+
 ### Polling Mode (Development)
 
 Best for local development. The bot actively polls Telegram for updates — no public URL needed.
@@ -327,6 +338,7 @@ For production servers with a public URL. Telegram pushes updates to your server
    WEBHOOK_SECRET=a-strong-random-secret
    PORT=3000
    NODE_ENV=production
+   APP_ENV=production
    ```
 
 2. **Build and start:**
