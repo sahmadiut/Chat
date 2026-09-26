@@ -2,6 +2,8 @@
 
 > `TASK-0002` owns this file. Do not mark a phase Implemented/Partial/Missing without repository evidence from `TASK-0001`.
 
+Repository reconnaissance evidence is now in `PROJECT_KNOWLEDGE.md` and `ARCHITECTURE.md`. The existing `conversation` table is for grammY wizard analytics; it is not a peer chat session. The existing `messages` table holds a single Telegram message ID and has no two-sided relay/session mapping. `TASK-0002` will assess each phase and invariant against the PRD.
+
 ## Executive Summary
 
 Pending repository reconnaissance.

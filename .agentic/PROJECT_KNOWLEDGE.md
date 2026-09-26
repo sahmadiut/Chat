@@ -1,66 +1,57 @@
-# Project Knowledge
-
-> This file is intentionally incomplete at framework creation time. `TASK-0001` must replace unknowns with repository evidence.
+# Project Knowledge — Verified Repository Baseline
 
 ## Repository Summary
 
-- Repository root: **UNKNOWN**
-- Primary language(s): **UNKNOWN**
-- Telegram framework/library: **UNKNOWN**
-- Application entrypoint(s): **UNKNOWN**
-- Package/dependency manager: **UNKNOWN**
-- Deployment model: **UNKNOWN**
+- Root: `D:/Projects/Chat`. The code is a reusable Telegram bot core, not yet the anonymous messaging product (`package.json`, `src/bot/features/index.ts`, `src/database/schema/`).
+- TypeScript ESM, Node >=20, npm; grammY, Fastify, Drizzle ORM/PostgreSQL, ioredis and BullMQ (`package.json`).
+- `src/main.ts` is the entrypoint: polling via `@grammyjs/runner` or webhook via `src/server/webhook.ts`.
 
 ## Repository Map
 
-| Path | Purpose | Evidence |
-|---|---|---|
-| TBD | To be discovered by `TASK-0001` | Pending |
+| Path | Purpose |
+|---|---|
+| `src/bot/bot.ts`, `context.ts`, `commands.ts` | Bot middleware/conversations, context, Telegram command menu |
+| `src/bot/features/` | Start/profile/support, settings, admin, notifications, Mini App, inline and media composers |
+| `src/bot/navigation/`, `conversations/`, `middlewares/`, `i18n/`, `media/` | Menus/callbacks, wizards, update pipeline, localization, file handling |
+| `src/services/` | User/chat CRUD, settings, generic message logs, notifications, chat events, admin logs |
+| `src/database/`, `src/cache/`, `src/queue/` | PostgreSQL/Drizzle, Redis, BullMQ workers and queues |
+| `src/server/`, `src/scripts/` | Fastify webhook/Mini App and webhook registration |
+| `locales/`, `.agentic/` | English/Farsi Fluent translations; project task framework and PRD |
+| `.github/workflows/ci.yml`, `.husky/`, `biome.json`, `vitest.config.ts` | CI, pre-commit, lint/format, tests |
 
-## Runtime & Local Development
+## Runtime and Quality Gates
 
-- Setup command: **UNKNOWN**
-- Start command: **UNKNOWN**
-- Test command: **UNKNOWN**
-- Lint/type-check command: **UNKNOWN**
-- Required services: **UNKNOWN**
+- `npm ci`, copy `.env.example` to `.env`, then `npm run dev` (tsx watch). `npm run build && npm start` runs compiled `dist/main.js` (`package.json`).
+- `src/config/env.ts` validates configuration with Zod. Required: `BOT_TOKEN`, `BOT_USERNAME`, `ADMIN_CHAT_ID`, `DATABASE_URL`; Redis defaults to localhost. Webhook mode needs URL/secret.
+- `npm test` uses Vitest with co-located `src/**/*.test.ts`; `npm run typecheck`, `npm run lint`, `npm run build` are available. CI runs Biome, typecheck and build on Node 20/22, but does not run Vitest (`.github/workflows/ci.yml`). No dedicated test database setup found (`vitest.config.ts`).
+- Database scripts offer generate/migrate/push/studio. `db:seed` references absent `src/scripts/seed.ts` (`package.json`).
 
-## Data & Infrastructure
+## Data and Infrastructure
 
-- PostgreSQL integration: **UNKNOWN**
-- Migration tool: **UNKNOWN**
-- Redis integration: **UNKNOWN**
-- Queue/worker system: **UNKNOWN**
-- Object storage: **UNKNOWN**
-- Backup/recovery implementation: **UNKNOWN**
+- PostgreSQL uses postgres.js and Drizzle (`src/database/index.ts`). Tables: `users`, `chats`, `user_chat`, chat member/join/boost events, `messages`, `conversation`, `bot_settings`, notification preferences/templates and `admin_logs` (`src/database/schema/`). `users.telegram_id` is primary identity. `conversation` tracks grammY wizard lifecycle, not peer chat sessions.
+- Every startup may create the database and runs `drizzle-kit push --force`, then verifies `users`/`chats` (`src/database/index.ts`). `drizzle.config.ts` points to `drizzle/`, but no checked-in migrations were found.
+- Redis stores grammY session/conversation state (seven-day/one-day TTL), debounce and cache (`src/bot/middlewares/session.middleware.ts`, `src/cache/`). Rate limiting uses `@grammyjs/ratelimiter`; no matching locks found.
+- BullMQ has broadcast and notification queues, retries/backoff and workers imported into the bot process (`src/queue/`). Media is stored in local directories. No object storage or backup implementation found.
+- Fastify serves the bot webhook, `/health`, `/livez`, `/webapp` and `/webapp/validate`; webhook secret/IP and Mini App HMAC checks are in `src/server/webhook.ts`. Pino logs to application and per-user files (`src/utils/logger.ts`). No Dockerfile, compose, systemd or deployment manifest found.
 
 ## Existing Product Modules
 
-| Module | Implementation State | Key Paths | Notes |
-|---|---|---|---|
-| Registration / identity | UNKNOWN | TBD | Pending repository review |
-| Custom profiles | UNKNOWN | TBD | Pending repository review |
-| Anonymous links / inbox | UNKNOWN | TBD | Pending repository review |
-| Matchmaking | UNKNOWN | TBD | Pending repository review |
-| Live chat / sessions | UNKNOWN | TBD | Pending repository review |
-| Telegram deletion | UNKNOWN | TBD | Pending repository review |
-| Coins / rewards / referrals | UNKNOWN | TBD | Pending repository review |
-| Moderation / anti-abuse | UNKNOWN | TBD | Pending repository review |
-| Admin / archive / exports | UNKNOWN | TBD | Pending repository review |
-| Monitoring / operations | UNKNOWN | TBD | Pending repository review |
+| Module | State from code | Evidence |
+|---|---|---|
+| Telegram registration/identity | Implemented generic core | `users.ts`, `upsert.middleware.ts`, `user.service.ts` |
+| Custom matchmaking profile | Missing | `users.ts` only stores Telegram fields; no custom profile table/feature |
+| Anonymous links/inbox | Missing | No link/inbox schema or feature composer |
+| Matchmaking and live peer chat | Missing | No match/session tables or composer; `conversation` is wizard analytics |
+| Two-sided Telegram deletion | Missing | `messages.ts` has one Telegram message ID; no relay mapping/deletion service |
+| Coins/rewards/referrals | Missing | No ledger/referral schema or service |
+| Moderation | Partial generic controls | Ban guard, admin ban/unban, rate limit; no anonymous report flow |
+| Admin/archive/export | Partial generic controls | Admin composer/logs, message history/stats; no session archive/export |
+| Monitoring/operations | Partial | Pino, health/liveness, alerts and CI; backup/recovery absent |
+| Localization/settings | Implemented generic core | Fluent locale files, bot settings, notification preferences |
 
-## Important Existing Conventions
+## Conventions, Risks and Open Questions
 
-- **UNKNOWN**
-
-## Known Technical Debt / Problems
-
-- **UNKNOWN**
-
-## Open Questions
-
-1. What code already exists and how much of the PRD is implemented?
-2. What Telegram bot framework and state-management approach are currently used?
-3. Which database tables/migrations already exist?
-4. Is Redis already used for queueing, state, locks, or rate limiting?
-5. What tests and deployment automation already exist?
+- Feature composers register in `src/bot/features/index.ts`; middleware and conversations in `src/bot/bot.ts`. Services use Drizzle directly, often with Redis cache. Imports use `#root` and `.js` extensions (`tsconfig.json`).
+- `/profile` displays Telegram name, username and ID (`src/bot/features/start/start.command.ts`); it cannot serve as an anonymous public profile. Logger middleware duplicates incoming text/payload into Pino, per-user files and PostgreSQL, expanding exposure of future private content (`src/bot/middlewares/logger.middleware.ts`). Startup `push --force` is an operational risk.
+- A broad text fallback in the first composer (`start.command.ts`) may consume later composers' text handlers; verify with integration tests when modifying routing.
+- Live PostgreSQL/Redis/Telegram startup and production topology are unverified. Hosting, backup, retention and secret distribution are not represented by checked-in artifacts. README claims need rechecking where paths are absent. `TASK-0002` owns detailed PRD gap analysis.

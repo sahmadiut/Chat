@@ -1,15 +1,15 @@
 # Task Board
 
-**Updated:** 2026-09-07T00:34:33+00:00
+**Updated:** 2026-09-26T13:15:17+00:00
 
 ## PHASE-00 — Discovery & Baseline
 
-Progress: **0/2 complete**, 1 active/partial/review/blocked.
+Progress: **1/2 complete**, 0 active/partial/review/blocked.
 
 | Task | Status | Priority | Title | Dependencies |
 |---|---|---|---|---|
-| `TASK-0001` | **IN_PROGRESS** ← CURRENT | P0 | Repository Reconnaissance | — |
-| `TASK-0002` | **NOT_STARTED** | P0 | PRD-to-Code Gap Analysis | TASK-0001 |
+| `TASK-0001` | **DONE** | P0 | Repository Reconnaissance | — |
+| `TASK-0002` | **READY** ← CURRENT | P0 | PRD-to-Code Gap Analysis | TASK-0001 |
 
 ## PHASE-01 — Foundation, Identity & Runtime
 

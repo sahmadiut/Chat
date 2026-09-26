@@ -1,34 +1,36 @@
 # Current Work
 
-## TASK-0001 — Repository Reconnaissance
+## TASK-0002 — PRD-to-Code Gap Analysis
 
 - **Phase:** PHASE-00
-- **Status:** IN_PROGRESS
+- **Status:** READY
 - **Priority:** P0
-- **Dependencies:** None
+- **Dependencies:** TASK-0001
 - **Blocker:** None
-- **Last note:** Initial discovery task selected as the current work item; repository inspection is the next action.
+- **Last note:** None
 
 ## Objective
 
-Inspect the entire repository and create a verified as-is understanding of the codebase before implementation changes.
+Compare the verified repository state against the product/technical PRD and convert findings into an evidence-based implementation plan.
 
 ## Required Outputs
 
-- `PROJECT_KNOWLEDGE.md`
-- `ARCHITECTURE.md`
+- `GAP_ANALYSIS.md`
+- `RISKS.md`
+- `DECISIONS.md`
+- `state/project_state.json`
 
 ## Acceptance Criteria
 
-- [ ] Repository tree and major directories are documented.
-- [ ] Runtime/framework/entrypoints are identified from code, not guessed.
-- [ ] Database, Redis, queues, migrations, tests, deployment and configuration are documented where present.
-- [ ] Implemented vs unknown product modules are noted.
-- [ ] Open questions and evidence gaps are explicitly listed.
+- [ ] Every implementation phase has an Implemented/Partial/Missing/Unknown assessment.
+- [ ] Critical PRD invariants are checked explicitly.
+- [ ] Existing task statuses are updated only when code evidence supports the change.
+- [ ] The next recommended implementation task is selected.
+- [ ] Risks/blockers and unresolved architectural decisions are recorded.
 
 ## Planned After This Task
 
-- `TASK-0002` — PRD-to-Code Gap Analysis [P0]
+- `TASK-0101` — Runtime & Project Skeleton [P0]
 
 ## Immediate Execution Order
 

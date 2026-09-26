@@ -17,4 +17,9 @@
 
 ## Repository-Specific Risks
 
-Pending `TASK-0001` and `TASK-0002`.
+| ID | Severity | Observed risk | Evidence | Follow-up |
+|---|---|---|---|---|
+| R-011 | High | Generic `/profile` displays Telegram identity and could leak it if reused for anonymous profiles | `src/bot/features/start/start.command.ts` | Keep anonymous profile in a separate model and projection |
+| R-012 | High | Incoming text/payload is copied to Pino, per-user logs and PostgreSQL | `src/bot/middlewares/logger.middleware.ts` | Define private-content logging policy before adding inbox/chat relay |
+| R-013 | High | Startup forces schema push and may alter production schema without migration review | `src/database/index.ts` | Replace with controlled migrations for production |
+| R-014 | Medium | No checked-in migration or backup/deployment artifacts | `drizzle.config.ts`, repository tree | Define migration, backup and recovery process |

@@ -7,8 +7,8 @@
 - **Product:** Anonymous Messaging & Anonymous Chat Telegram Bot
 - **Platform:** Telegram Bot only
 - **Core product:** Personal anonymous inbox + anonymous matchmaking chat
-- **Task progress:** 0/78 complete/skipped
-- **Current task:** `TASK-0001` — Repository Reconnaissance (IN_PROGRESS)
+- **Task progress:** 1/78 complete/skipped
+- **Current task:** `TASK-0002` — PRD-to-Code Gap Analysis (READY)
 
 ## Non-Negotiable Rules
 
@@ -26,27 +26,29 @@
 
 ## Current Work
 
-**TASK-0001 — Repository Reconnaissance**
+**TASK-0002 — PRD-to-Code Gap Analysis**
 
-Inspect the entire repository and create a verified as-is understanding of the codebase before implementation changes.
+Compare the verified repository state against the product/technical PRD and convert findings into an evidence-based implementation plan.
 
 Required outputs:
-- `PROJECT_KNOWLEDGE.md`
-- `ARCHITECTURE.md`
+- `GAP_ANALYSIS.md`
+- `RISKS.md`
+- `DECISIONS.md`
+- `state/project_state.json`
 
 ## Next Eligible Tasks
 
-- None while the current task is active.
+- `TASK-0002` — PRD-to-Code Gap Analysis [READY, P0] (current)
 
 ## Planned After Current Task
 
-- `TASK-0002` — PRD-to-Code Gap Analysis [P0]
+- `TASK-0101` — Runtime & Project Skeleton [P0]
 
 ## Phase Progress
 
 | Phase | Done | Active/Partial/Review/Blocked | Total |
 |---|---:|---:|---:|
-| PHASE-00 — Discovery & Baseline | 0 | 1 | 2 |
+| PHASE-00 — Discovery & Baseline | 1 | 0 | 2 |
 | PHASE-01 — Foundation, Identity & Runtime | 0 | 0 | 6 |
 | PHASE-02 — Profiles & User Settings | 0 | 0 | 5 |
 | PHASE-03 — Anonymous Links & Inbox | 0 | 0 | 6 |
