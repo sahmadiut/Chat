@@ -1,0 +1,1787 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "Anonymous Messaging & Anonymous Chat Telegram Bot",
+    "source_prd": "references/PRODUCT_PRD.md",
+    "framework_version": "1.0.0",
+    "current_task_id": "TASK-0001",
+    "updated_at": "2026-09-07T00:34:33+00:00"
+  },
+  "status_definitions": {
+    "NOT_STARTED": "Known work that has not started.",
+    "READY": "Unblocked and ready to be started.",
+    "PARTIAL": "Existing implementation is verified but incomplete.",
+    "IN_PROGRESS": "The task currently has active implementation work.",
+    "BLOCKED": "Cannot proceed until a named blocker is resolved.",
+    "REVIEW": "Implementation is complete enough for validation/review.",
+    "DONE": "Acceptance criteria were verified with evidence.",
+    "SKIPPED": "Explicitly out of scope; reason must be documented."
+  },
+  "phases": [
+    {
+      "id": "PHASE-00",
+      "name": "Discovery & Baseline",
+      "goal": "Understand the existing repository before changing it. Build a verified as-is map and compare it with the PRD.",
+      "prd_anchor": "PRD-wide; especially sections 136-146"
+    },
+    {
+      "id": "PHASE-01",
+      "name": "Foundation, Identity & Runtime",
+      "goal": "Establish the bot runtime, durable infrastructure, identity model, consent, state routing, and localization foundation.",
+      "prd_anchor": "Sections 1-15, 100-108, 119-122, 136"
+    },
+    {
+      "id": "PHASE-02",
+      "name": "Profiles & User Settings",
+      "goal": "Implement the custom matchmaking profile, profile history, validation, completion, visibility, and user preferences.",
+      "prd_anchor": "Sections 12-15, 96-99, 132-134"
+    },
+    {
+      "id": "PHASE-03",
+      "name": "Anonymous Links & Inbox",
+      "goal": "Implement personal anonymous links, anonymous compose/reply threads, inbox management, and anonymous sender controls.",
+      "prd_anchor": "Sections 16-26, 130-131, 140"
+    },
+    {
+      "id": "PHASE-04",
+      "name": "Matchmaking Core",
+      "goal": "Build eligibility checks, queueing, atomic matching, pair history, repeat-match rules, and profile snapshots.",
+      "prd_anchor": "Sections 27-36, 105, 123-125, 141"
+    },
+    {
+      "id": "PHASE-05",
+      "name": "Live Chat & Session Lifecycle",
+      "goal": "Implement session-scoped relay, Telegram message mapping, active-chat controls, and deterministic session ending.",
+      "prd_anchor": "Sections 32-44, 122, 126-129"
+    },
+    {
+      "id": "PHASE-06",
+      "name": "Deletion & Retention",
+      "goal": "Implement message/session Telegram deletion while preserving the internal archive and audit trail.",
+      "prd_anchor": "Sections 40-54, 149-150"
+    },
+    {
+      "id": "PHASE-07",
+      "name": "Coins, Rewards & Referrals",
+      "goal": "Implement the transactional coin ledger, one-time rewards, referral qualification, and anti-farming guarantees.",
+      "prd_anchor": "Sections 65-73, 106-108"
+    },
+    {
+      "id": "PHASE-08",
+      "name": "Moderation & Anti-Abuse",
+      "goal": "Implement blocking, reports, warnings, restrictions, spam controls, and risk-based abuse defenses.",
+      "prd_anchor": "Sections 74-80, 110-112, 131"
+    },
+    {
+      "id": "PHASE-09",
+      "name": "Admin, Archive, Export & Operations UI",
+      "goal": "Build Telegram-only administrative workflows for investigation, moderation, export, audit, broadcasts, and statistics.",
+      "prd_anchor": "Sections 81-95, 142"
+    },
+    {
+      "id": "PHASE-10",
+      "name": "Security, Concurrency & Reliability",
+      "goal": "Harden authorization, transactional behavior, restart safety, Redis failure behavior, workers, backups, and recovery.",
+      "prd_anchor": "Sections 105-115, 126-129, 137"
+    },
+    {
+      "id": "PHASE-11",
+      "name": "Observability, Configuration & Analytics",
+      "goal": "Add logs, monitoring, configuration, feature flags, maintenance mode, analytics events, indexing, and pagination.",
+      "prd_anchor": "Sections 113-119, 135, 138-139"
+    },
+    {
+      "id": "PHASE-12",
+      "name": "Phase 2 Product Enhancements",
+      "goal": "Add protected content, richer media, location/distance matching, advanced filters, history, moderators, and stronger fraud controls.",
+      "prd_anchor": "PRD section 144 plus sections 55-64"
+    },
+    {
+      "id": "PHASE-13",
+      "name": "Phase 3 Growth & Monetization",
+      "goal": "Add optional growth, monetization, recommendation, moderation-assistance, and reputation features only after core safety is stable.",
+      "prd_anchor": "PRD section 145"
+    },
+    {
+      "id": "PHASE-14",
+      "name": "Production Readiness & Acceptance",
+      "goal": "Prove the implementation against the PRD acceptance criteria and operational release requirements.",
+      "prd_anchor": "PRD sections 146-151"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "TASK-0001",
+      "phase": "PHASE-00",
+      "title": "Repository Reconnaissance",
+      "status": "IN_PROGRESS",
+      "priority": "P0",
+      "dependencies": [],
+      "objective": "Inspect the entire repository and create a verified as-is understanding of the codebase before implementation changes.",
+      "outputs": [
+        "PROJECT_KNOWLEDGE.md",
+        "ARCHITECTURE.md"
+      ],
+      "acceptance": [
+        "Repository tree and major directories are documented.",
+        "Runtime/framework/entrypoints are identified from code, not guessed.",
+        "Database, Redis, queues, migrations, tests, deployment and configuration are documented where present.",
+        "Implemented vs unknown product modules are noted.",
+        "Open questions and evidence gaps are explicitly listed."
+      ],
+      "blocker": "",
+      "last_note": "Initial discovery task selected as the current work item; repository inspection is the next action."
+    },
+    {
+      "id": "TASK-0002",
+      "phase": "PHASE-00",
+      "title": "PRD-to-Code Gap Analysis",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0001"
+      ],
+      "objective": "Compare the verified repository state against the product/technical PRD and convert findings into an evidence-based implementation plan.",
+      "outputs": [
+        "GAP_ANALYSIS.md",
+        "RISKS.md",
+        "DECISIONS.md",
+        "state/project_state.json"
+      ],
+      "acceptance": [
+        "Every implementation phase has an Implemented/Partial/Missing/Unknown assessment.",
+        "Critical PRD invariants are checked explicitly.",
+        "Existing task statuses are updated only when code evidence supports the change.",
+        "The next recommended implementation task is selected.",
+        "Risks/blockers and unresolved architectural decisions are recorded."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0101",
+      "phase": "PHASE-01",
+      "title": "Runtime & Project Skeleton",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0002"
+      ],
+      "objective": "Establish or validate the Telegram bot application skeleton, configuration loading, update entrypoint, and environment separation.",
+      "outputs": [
+        "bot runtime",
+        "configuration layer",
+        "environment templates"
+      ],
+      "acceptance": [
+        "Bot starts in a development environment.",
+        "Secrets are not committed.",
+        "Production/staging configuration boundaries are explicit."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0102",
+      "phase": "PHASE-01",
+      "title": "PostgreSQL & Redis Foundations",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0101"
+      ],
+      "objective": "Create durable PostgreSQL connectivity/migrations and Redis connectivity for transient state, locks, queues, rate limits, and cache.",
+      "outputs": [
+        "database setup",
+        "migration baseline",
+        "Redis adapter"
+      ],
+      "acceptance": [
+        "Migrations can run from a clean database.",
+        "Redis failure is detectable and fails safely.",
+        "No critical durable state exists only in memory."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0103",
+      "phase": "PHASE-01",
+      "title": "User Identity & Registration",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0102"
+      ],
+      "objective": "Implement internal users, Telegram identity snapshots/history, registration metadata, account state, and last bot activity.",
+      "outputs": [
+        "users model",
+        "identity history",
+        "registration service"
+      ],
+      "acceptance": [
+        "Telegram identity is stored internally and never exposed through anonymous views.",
+        "Identity changes are tracked where implemented.",
+        "last_activity_at reflects bot interaction, not Telegram last-seen."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0104",
+      "phase": "PHASE-01",
+      "title": "Terms, Privacy & Age Gate",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0103"
+      ],
+      "objective": "Implement versioned acceptance for Terms, Privacy Notice, Community Rules, and the product age policy.",
+      "outputs": [
+        "consent persistence",
+        "onboarding gate"
+      ],
+      "acceptance": [
+        "Version and acceptance timestamps are stored.",
+        "Anonymous/privacy wording does not claim service-level anonymity or E2E encryption.",
+        "Age policy is explicit."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0105",
+      "phase": "PHASE-01",
+      "title": "Explicit State Machine & Routing",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0103"
+      ],
+      "objective": "Implement explicit user states and deterministic incoming-update routing with idempotency protections.",
+      "outputs": [
+        "state model",
+        "router",
+        "processed-update/idempotency strategy"
+      ],
+      "acceptance": [
+        "Important flows do not infer state from last message text.",
+        "Routing priority prevents menu/control messages from leaking to chat partners.",
+        "Critical retries do not duplicate registration/reward/match/message effects."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0106",
+      "phase": "PHASE-01",
+      "title": "Localization Foundation",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0101"
+      ],
+      "objective": "Move user-facing strings and button labels behind translation keys with Persian as an initial supported locale.",
+      "outputs": [
+        "localization keys",
+        "locale resolver"
+      ],
+      "acceptance": [
+        "Business logic does not hard-code Persian text.",
+        "RTL/mixed-text constraints are documented for testing."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0201",
+      "phase": "PHASE-02",
+      "title": "Custom Profile Data Model",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0103"
+      ],
+      "objective": "Implement the separate matchmaking profile model and keep it distinct from Telegram identity.",
+      "outputs": [
+        "profile model",
+        "profile service"
+      ],
+      "acceptance": [
+        "Telegram and custom identities are separate data structures.",
+        "Required profile fields match product requirements."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0202",
+      "phase": "PHASE-02",
+      "title": "Profile Editing & Validation",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0201",
+        "TASK-0105",
+        "TASK-0106"
+      ],
+      "objective": "Implement profile editing, field validation, and completion scoring.",
+      "outputs": [
+        "profile edit flows",
+        "validators",
+        "completion calculation"
+      ],
+      "acceptance": [
+        "Invalid age/name/bio/photo/city inputs are rejected consistently.",
+        "Completion percentage is deterministic."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0203",
+      "phase": "PHASE-02",
+      "title": "Profile Views & Privacy",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0202"
+      ],
+      "objective": "Implement owner, public matchmaking, and admin profile projections with privacy controls.",
+      "outputs": [
+        "profile projections",
+        "visibility settings"
+      ],
+      "acceptance": [
+        "Public profile never contains Telegram ID/username/real account data/exact GPS.",
+        "Admin view clearly separates Telegram identity and custom profile."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0204",
+      "phase": "PHASE-02",
+      "title": "Profile History & Snapshots Support",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0202"
+      ],
+      "objective": "Persist profile changes in a form that supports historical admin review and future session snapshots.",
+      "outputs": [
+        "profile history"
+      ],
+      "acceptance": [
+        "Historical values are retained with timestamps.",
+        "Current profile remains queryable independently of history."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0205",
+      "phase": "PHASE-02",
+      "title": "User Settings & Deactivation",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0203"
+      ],
+      "objective": "Implement privacy, notification, chat, anonymous settings and account deactivation behavior.",
+      "outputs": [
+        "settings model",
+        "settings menus",
+        "deactivation service"
+      ],
+      "acceptance": [
+        "Deactivation disables links and matchmaking and handles an active session.",
+        "Historical records are retained according to policy."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0301",
+      "phase": "PHASE-03",
+      "title": "Anonymous Link Tokens",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0104",
+        "TASK-0105"
+      ],
+      "objective": "Implement secure random anonymous-link tokens, resolution, revocation, and regeneration.",
+      "outputs": [
+        "anonymous_links model",
+        "link service"
+      ],
+      "acceptance": [
+        "Tokens do not reveal Telegram/internal IDs.",
+        "Revoked tokens stop resolving.",
+        "Link mode does not expose destination profile."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0302",
+      "phase": "PHASE-03",
+      "title": "Anonymous Message Compose & Storage",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0301"
+      ],
+      "objective": "Implement anonymous compose mode and internal sender/recipient attribution with supported content policy.",
+      "outputs": [
+        "anonymous message service",
+        "message persistence"
+      ],
+      "acceptance": [
+        "Recipient never sees sender Telegram identity.",
+        "Backend stores sender and recipient when sender is an identified bot user.",
+        "Identity-leaking content is disabled or handled by policy."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0303",
+      "phase": "PHASE-03",
+      "title": "Anonymous Inbox & Delivery",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0302"
+      ],
+      "objective": "Implement inbox delivery, unread/all/replied views, pagination, read state, and hide/delete-visible behavior.",
+      "outputs": [
+        "inbox UI",
+        "pagination",
+        "delivery mapping"
+      ],
+      "acceptance": [
+        "Inbox can paginate safely.",
+        "User-visible deletion does not remove backend archive."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0304",
+      "phase": "PHASE-03",
+      "title": "Anonymous Reply Threads",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0303"
+      ],
+      "objective": "Implement anonymous reply threads without creating matchmaking relationships.",
+      "outputs": [
+        "anonymous thread model",
+        "reply flow"
+      ],
+      "acceptance": [
+        "Replies remain anonymous to both users.",
+        "Threading is independent from live matchmaking sessions."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0305",
+      "phase": "PHASE-03",
+      "title": "Anonymous Block & Report",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0303"
+      ],
+      "objective": "Implement hidden-identity blocking and precise reporting for anonymous senders/messages.",
+      "outputs": [
+        "block/report integration"
+      ],
+      "acceptance": [
+        "Recipient can block without learning sender identity.",
+        "Future prohibited anonymous messages are rejected.",
+        "Reports preserve precise source references."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0306",
+      "phase": "PHASE-03",
+      "title": "Anonymous Abuse Controls",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0302",
+        "TASK-0801"
+      ],
+      "objective": "Add per-sender/per-recipient limits, cooldowns, duplicate detection hooks, and new-account media restrictions.",
+      "outputs": [
+        "rate-limit policies",
+        "abuse checks"
+      ],
+      "acceptance": [
+        "Abusive bursts are limited.",
+        "Controls are configurable and observable."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0401",
+      "phase": "PHASE-04",
+      "title": "Matchmaking Eligibility",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0203",
+        "TASK-0105"
+      ],
+      "objective": "Implement account/profile/status/coin/rate-limit eligibility checks before queue entry.",
+      "outputs": [
+        "eligibility service"
+      ],
+      "acceptance": [
+        "Banned/inactive/incomplete/already-chatting/already-queued users cannot enter incorrectly."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0402",
+      "phase": "PHASE-04",
+      "title": "Match Queue",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0401",
+        "TASK-0102"
+      ],
+      "objective": "Implement Redis-backed queue requests with durable intent/audit where needed.",
+      "outputs": [
+        "queue service"
+      ],
+      "acceptance": [
+        "Queue add/cancel is deterministic.",
+        "Queue state can fail safely if Redis is unavailable."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0403",
+      "phase": "PHASE-04",
+      "title": "User Pair Model",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0102"
+      ],
+      "objective": "Implement normalized user-pair history for blocks, repeat matches, cooldowns, and aggregate metadata.",
+      "outputs": [
+        "user_pairs model"
+      ],
+      "acceptance": [
+        "Pair ordering is normalized.",
+        "Pair state is not used as a substitute for individual sessions."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0404",
+      "phase": "PHASE-04",
+      "title": "Atomic Match Creation",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0402",
+        "TASK-0403",
+        "TASK-0204"
+      ],
+      "objective": "Atomically reserve two candidates, re-check eligibility/blocks, create a brand-new session, snapshot profiles, and release queue state.",
+      "outputs": [
+        "matching transaction",
+        "locking strategy"
+      ],
+      "acceptance": [
+        "One user cannot be matched to two people concurrently.",
+        "Every successful match creates a new session.",
+        "Cancel-vs-match race has deterministic behavior."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0405",
+      "phase": "PHASE-04",
+      "title": "Match Preferences & Repeat Rules",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0404"
+      ],
+      "objective": "Implement female/male/random selection, allowed filters, repeat-match cooldown/deprioritization, and previous-match handling.",
+      "outputs": [
+        "matching rules"
+      ],
+      "acceptance": [
+        "Self/block/banned/unavailable matches are impossible.",
+        "Female, Male and Random modes work.",
+        "Repeat matches create new sessions when allowed."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0406",
+      "phase": "PHASE-04",
+      "title": "Match Search UX",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0402",
+        "TASK-0106"
+      ],
+      "objective": "Implement search, cancel, no-candidate, keep-searching and filter navigation states.",
+      "outputs": [
+        "matchmaking UI"
+      ],
+      "acceptance": [
+        "Search state cannot accidentally forward control messages.",
+        "Cancel resolves races consistently with server state."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0501",
+      "phase": "PHASE-05",
+      "title": "Chat Session Model & Lifecycle",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0404"
+      ],
+      "objective": "Implement session statuses, participant membership, match metadata, end fields, and active-session lookup.",
+      "outputs": [
+        "chat_sessions model",
+        "session service"
+      ],
+      "acceptance": [
+        "Ended sessions are never reopened.",
+        "Each active chat maps to exactly one session."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0502",
+      "phase": "PHASE-05",
+      "title": "Live Chat Relay",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0501"
+      ],
+      "objective": "Implement relay of supported content through the bot with server-side archival.",
+      "outputs": [
+        "chat relay service"
+      ],
+      "acceptance": [
+        "Partner Telegram identity is never exposed.",
+        "Control/menu messages are not relayed.",
+        "Each archived message belongs to exactly one session."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0503",
+      "phase": "PHASE-05",
+      "title": "Telegram Message Mapping",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0502"
+      ],
+      "objective": "Persist sender-side and recipient-side Telegram chat/message IDs for every relayed message.",
+      "outputs": [
+        "chat_messages mapping"
+      ],
+      "acceptance": [
+        "Both Telegram copies are addressable later for deletion.",
+        "Mapping persists across restarts."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0504",
+      "phase": "PHASE-05",
+      "title": "Session System Message Registry",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0501"
+      ],
+      "objective": "Track session-related bot/system messages that may need deletion or audit.",
+      "outputs": [
+        "session_telegram_messages"
+      ],
+      "acceptance": [
+        "Match/profile/protected/end notices can be associated with a session and user."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0505",
+      "phase": "PHASE-05",
+      "title": "End Chat & Post-Chat Flow",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0502"
+      ],
+      "objective": "Implement confirmation, release of participants, deterministic end reason, and post-chat actions.",
+      "outputs": [
+        "end-chat service",
+        "post-chat UI"
+      ],
+      "acceptance": [
+        "Both users leave active-chat state.",
+        "History remains intact.",
+        "Find-another/block/report/delete-this-chat actions reference the ended session."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0506",
+      "phase": "PHASE-05",
+      "title": "Restart & Reachability Recovery",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0501",
+        "TASK-0102"
+      ],
+      "objective": "Handle bot restarts and Telegram delivery failures without corrupting session state.",
+      "outputs": [
+        "recovery logic",
+        "reachability handling"
+      ],
+      "acceptance": [
+        "Restart does not destroy active durable records.",
+        "Blocked/unreachable bot users are removed from queue and active chat is handled safely."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0601",
+      "phase": "PHASE-06",
+      "title": "Single Message Deletion",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0503"
+      ],
+      "objective": "Implement delete-for-both using the exact session message mapping while retaining the database record.",
+      "outputs": [
+        "single-delete service",
+        "deletion events"
+      ],
+      "acceptance": [
+        "Requester membership is verified.",
+        "Both Telegram copies are attempted.",
+        "Backend record remains archived."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0602",
+      "phase": "PHASE-06",
+      "title": "Full Session Deletion",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0503",
+        "TASK-0504"
+      ],
+      "objective": "Implement deletion of Telegram-visible messages for one exact session only.",
+      "outputs": [
+        "session-delete service"
+      ],
+      "acceptance": [
+        "Only selected session mappings are targeted.",
+        "Other sessions between the same pair are untouched.",
+        "Database archive remains."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0603",
+      "phase": "PHASE-06",
+      "title": "Deletion Batching & Limits",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0602"
+      ],
+      "objective": "Implement per-chat dedupe, batches of up to 100 IDs, Telegram deletion-limit handling, retries, and partial results.",
+      "outputs": [
+        "batch deletion worker",
+        "result model"
+      ],
+      "acceptance": [
+        "Sessions with >100 messages are processed in multiple batches.",
+        "Older/non-deletable messages yield partial status rather than archive loss."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0604",
+      "phase": "PHASE-06",
+      "title": "Deletion UX & Audit",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0603"
+      ],
+      "objective": "Expose 48-hour limitation warning, result states, and detailed deletion audit records.",
+      "outputs": [
+        "deletion UX",
+        "audit persistence"
+      ],
+      "acceptance": [
+        "Warning appears before full deletion.",
+        "FULL/PARTIAL/FAILED results are stored and reported.",
+        "Deletion actions are auditable."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0701",
+      "phase": "PHASE-07",
+      "title": "Coin Ledger",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0102"
+      ],
+      "objective": "Implement an append-only transactional coin ledger and derived/current balance.",
+      "outputs": [
+        "coin_transactions",
+        "coin service"
+      ],
+      "acceptance": [
+        "Spends are concurrency-safe.",
+        "Every balance change has a ledger record.",
+        "No unprotected read-then-subtract flow."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0702",
+      "phase": "PHASE-07",
+      "title": "Welcome & Profile Rewards",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0701",
+        "TASK-0202"
+      ],
+      "objective": "Implement one-time registration and profile-completion rewards with anti-farming claims.",
+      "outputs": [
+        "reward_claims",
+        "reward service"
+      ],
+      "acceptance": [
+        "Each reward type is claimable once per policy.",
+        "Remove/re-add profile field does not farm rewards."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0703",
+      "phase": "PHASE-07",
+      "title": "Referral Qualification",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0701",
+        "TASK-0104"
+      ],
+      "objective": "Implement referral tokens, qualification, idempotent reward issuance, and basic fraud checks.",
+      "outputs": [
+        "referrals model",
+        "qualification job"
+      ],
+      "acceptance": [
+        "One referred user cannot trigger duplicate rewards.",
+        "Rewards wait for configured qualification."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0704",
+      "phase": "PHASE-07",
+      "title": "Match & Filter Costs",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0701",
+        "TASK-0404"
+      ],
+      "objective": "Integrate configurable coin reservations/spends/refunds into paid matchmaking options without breaking basic usability.",
+      "outputs": [
+        "coin-match integration"
+      ],
+      "acceptance": [
+        "No double-spend on concurrent actions.",
+        "Failed/cancelled paid operations have defined refund behavior."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0705",
+      "phase": "PHASE-07",
+      "title": "Coins UI & History",
+      "status": "NOT_STARTED",
+      "priority": "P2",
+      "dependencies": [
+        "TASK-0701",
+        "TASK-0106"
+      ],
+      "objective": "Implement balance, lifetime earned/spent, paginated history, rewards, and referral entry points.",
+      "outputs": [
+        "coins UI"
+      ],
+      "acceptance": [
+        "Displayed balances reconcile with ledger.",
+        "History is paginated."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0801",
+      "phase": "PHASE-08",
+      "title": "Unified Blocking Model",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0403",
+        "TASK-0305"
+      ],
+      "objective": "Implement consistent block semantics across matchmaking, anonymous inbox, and optional anonymous thread continuation.",
+      "outputs": [
+        "blocks model",
+        "block service"
+      ],
+      "acceptance": [
+        "Blocked pairs cannot match while block is active.",
+        "Source and session context are preserved where relevant."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0802",
+      "phase": "PHASE-08",
+      "title": "Reports & Evidence Precision",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0305",
+        "TASK-0503"
+      ],
+      "objective": "Implement reports for anonymous messages, users, profiles, chat messages, and exact sessions.",
+      "outputs": [
+        "reports model",
+        "report flow"
+      ],
+      "acceptance": [
+        "Reports point to exact session/message/anonymous source where applicable.",
+        "Admin can retrieve associated evidence."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0803",
+      "phase": "PHASE-08",
+      "title": "Warnings, Restrictions & Bans",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0802"
+      ],
+      "objective": "Implement moderation actions, warnings, temporary/permanent restrictions, and product-surface enforcement.",
+      "outputs": [
+        "moderation actions",
+        "restriction checks"
+      ],
+      "acceptance": [
+        "Restrictions are enforced server-side.",
+        "Moderation history is retained."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0804",
+      "phase": "PHASE-08",
+      "title": "Rate Limits & Flood Control",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0102"
+      ],
+      "objective": "Implement configurable anonymous/chat/search/referral rate limits and cooldowns.",
+      "outputs": [
+        "rate limiter"
+      ],
+      "acceptance": [
+        "Flooding is limited without relying on in-process memory only.",
+        "Limits are configurable."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0805",
+      "phase": "PHASE-08",
+      "title": "Risk Signals & Abuse Detection Hooks",
+      "status": "NOT_STARTED",
+      "priority": "P2",
+      "dependencies": [
+        "TASK-0802",
+        "TASK-0804"
+      ],
+      "objective": "Aggregate reports, blocks, duplicate behavior, account age and other signals into extensible risk checks.",
+      "outputs": [
+        "risk signal model"
+      ],
+      "acceptance": [
+        "Risk controls can influence moderation/search/media limits without exposing private data to users."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0901",
+      "phase": "PHASE-09",
+      "title": "Admin Authentication & RBAC",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0103"
+      ],
+      "objective": "Implement main admin allowlist plus granular secondary roles/permissions and server-side authorization.",
+      "outputs": [
+        "admin users/roles/permissions",
+        "authorization middleware"
+      ],
+      "acceptance": [
+        "Every sensitive admin action checks caller permissions server-side.",
+        "Main and secondary privileges are distinguishable."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0902",
+      "phase": "PHASE-09",
+      "title": "Admin User Search & User Page",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0901",
+        "TASK-0203"
+      ],
+      "objective": "Implement search by supported identifiers and a separated Telegram/custom-profile user view.",
+      "outputs": [
+        "admin search",
+        "user page"
+      ],
+      "acceptance": [
+        "Search explains matched identifier.",
+        "Telegram identity and custom profile are visually separated."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0903",
+      "phase": "PHASE-09",
+      "title": "Admin Session & Message Archive",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0902",
+        "TASK-0503",
+        "TASK-0604"
+      ],
+      "objective": "Implement session history, exact-session viewer, message pagination, snapshots, deletion indicators, and reports.",
+      "outputs": [
+        "admin session viewer"
+      ],
+      "acceptance": [
+        "Old sessions remain independently reviewable.",
+        "Deleted-from-Telegram content remains visible in authorized archive if retained."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0904",
+      "phase": "PHASE-09",
+      "title": "Admin Anonymous Archive",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0902",
+        "TASK-0304"
+      ],
+      "objective": "Implement sent/received anonymous message and thread inspection with internal identities for authorized admins.",
+      "outputs": [
+        "admin anonymous viewer"
+      ],
+      "acceptance": [
+        "Regular users never gain these identity views.",
+        "Admin access is permission-checked and auditable."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0905",
+      "phase": "PHASE-09",
+      "title": "Exports",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0903"
+      ],
+      "objective": "Implement user, exact-session, and optional pair-history exports with authorization and audit.",
+      "outputs": [
+        "export service",
+        "export worker"
+      ],
+      "acceptance": [
+        "Sessions are not merged in pair history.",
+        "Exports are restricted and audited.",
+        "Large exports do not block the update handler."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0906",
+      "phase": "PHASE-09",
+      "title": "Admin Notes & Audit Log",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0901"
+      ],
+      "objective": "Implement private notes and sensitive-action audit logging.",
+      "outputs": [
+        "admin_notes",
+        "admin_audit_logs"
+      ],
+      "acceptance": [
+        "Search/view/export/location/coin/moderation/config actions can be audited as required."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-0907",
+      "phase": "PHASE-09",
+      "title": "Broadcast & Statistics",
+      "status": "NOT_STARTED",
+      "priority": "P2",
+      "dependencies": [
+        "TASK-0901",
+        "TASK-1103"
+      ],
+      "objective": "Implement segmented broadcasts, delivery stats, and admin-facing product statistics.",
+      "outputs": [
+        "broadcast service",
+        "statistics views"
+      ],
+      "acceptance": [
+        "Broadcast delivery is backgrounded and reports queued/sent/failed states.",
+        "Statistics have defined source queries/aggregation."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1001",
+      "phase": "PHASE-10",
+      "title": "Callback & Ownership Security",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0105",
+        "TASK-0901"
+      ],
+      "objective": "Harden callback handlers against forged object IDs using identity, permission, ownership, and membership checks.",
+      "outputs": [
+        "authorization checks",
+        "security tests"
+      ],
+      "acceptance": [
+        "Forged callback IDs cannot access other users/sessions/admin objects."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1002",
+      "phase": "PHASE-10",
+      "title": "Concurrency & Transaction Review",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0404",
+        "TASK-0703",
+        "TASK-0603"
+      ],
+      "objective": "Audit match, coins, referrals, message archival, reports, and deletion operations for atomicity/idempotency.",
+      "outputs": [
+        "transaction plan",
+        "race-condition tests"
+      ],
+      "acceptance": [
+        "Known critical race conditions have deterministic outcomes.",
+        "Duplicate Telegram updates cannot duplicate critical effects."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1003",
+      "phase": "PHASE-10",
+      "title": "Background Workers & Retries",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0102"
+      ],
+      "objective": "Implement workers for deletion, exports, broadcasts, retryable delivery, statistics, moderation, referral qualification, and cleanup as needed.",
+      "outputs": [
+        "worker runtime",
+        "retry policy"
+      ],
+      "acceptance": [
+        "Heavy tasks do not block user-facing handlers.",
+        "Retries are idempotent."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1004",
+      "phase": "PHASE-10",
+      "title": "Redis/Restart Failure Safety",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0402",
+        "TASK-0506"
+      ],
+      "objective": "Define and test recovery when Redis is lost or application processes restart.",
+      "outputs": [
+        "recovery procedures",
+        "failure tests"
+      ],
+      "acceptance": [
+        "No duplicate active match is created after recovery.",
+        "Durable data remains authoritative."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1005",
+      "phase": "PHASE-10",
+      "title": "Secrets, Backups & Access Controls",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-0102"
+      ],
+      "objective": "Harden secret storage, DB/Redis network access, backup encryption, restore tests, and environment separation.",
+      "outputs": [
+        "security config",
+        "backup procedure"
+      ],
+      "acceptance": [
+        "Credentials are not committed.",
+        "Backup restoration is tested.",
+        "Privileged stores are access-restricted."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1101",
+      "phase": "PHASE-11",
+      "title": "Structured Logging",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0101"
+      ],
+      "objective": "Implement application/error/event logging without duplicating private conversation content into generic logs.",
+      "outputs": [
+        "logging policy",
+        "structured logs"
+      ],
+      "acceptance": [
+        "Sensitive content is minimized in generic logs.",
+        "Failures have traceable context."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1102",
+      "phase": "PHASE-11",
+      "title": "Monitoring & Health Checks",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-1101",
+        "TASK-1003"
+      ],
+      "objective": "Monitor bot, Telegram API, PostgreSQL, Redis, workers, queues, delivery latency, errors, backups, and abuse anomalies.",
+      "outputs": [
+        "health endpoints/checks",
+        "alerts/metrics"
+      ],
+      "acceptance": [
+        "Core dependencies and worker health are observable.",
+        "Backup failures are visible."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1103",
+      "phase": "PHASE-11",
+      "title": "System Configuration & Feature Flags",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0906"
+      ],
+      "objective": "Move business settings and rollout controls to database-backed configuration with safe admin access.",
+      "outputs": [
+        "system_settings",
+        "feature_flags"
+      ],
+      "acceptance": [
+        "Business settings are not hard-coded.",
+        "Changes are authorized and audited."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1104",
+      "phase": "PHASE-11",
+      "title": "Analytics Events",
+      "status": "NOT_STARTED",
+      "priority": "P2",
+      "dependencies": [
+        "TASK-0103"
+      ],
+      "objective": "Implement defined product analytics events with privacy-aware payloads.",
+      "outputs": [
+        "activity_events/analytics emitter"
+      ],
+      "acceptance": [
+        "Core registration/profile/anonymous/match/chat/moderation/economy events are recorded consistently."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1105",
+      "phase": "PHASE-11",
+      "title": "Indexes & Pagination Review",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0903"
+      ],
+      "objective": "Add required database indexes and enforce pagination in all large user/admin histories.",
+      "outputs": [
+        "migration indexes",
+        "pagination helpers"
+      ],
+      "acceptance": [
+        "No large unbounded history is loaded into one Telegram response.",
+        "Critical query paths have supporting indexes."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1106",
+      "phase": "PHASE-11",
+      "title": "Maintenance Mode & Operational Controls",
+      "status": "NOT_STARTED",
+      "priority": "P2",
+      "dependencies": [
+        "TASK-1103"
+      ],
+      "objective": "Implement maintenance mode and safe operational switches while preserving admin access.",
+      "outputs": [
+        "maintenance mode"
+      ],
+      "acceptance": [
+        "Users receive maintenance response while admins retain access."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1201",
+      "phase": "PHASE-12",
+      "title": "Protected Chat",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0502"
+      ],
+      "objective": "Implement per-session Telegram protected-content delivery with clear non-E2E wording and chosen consent policy.",
+      "outputs": [
+        "protected chat flow"
+      ],
+      "acceptance": [
+        "Protected mode is session-scoped.",
+        "Only future messages are protected as designed.",
+        "UI never calls it end-to-end encrypted."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1202",
+      "phase": "PHASE-12",
+      "title": "Rich Media Chat & Anonymous Media",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0503",
+        "TASK-0302"
+      ],
+      "objective": "Add photo/voice/video/video-note/audio/sticker/GIF/document support with privacy and moderation controls.",
+      "outputs": [
+        "media relay/storage"
+      ],
+      "acceptance": [
+        "Media mappings support deletion/audit.",
+        "Identity-leaking contact/location payloads remain controlled."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1203",
+      "phase": "PHASE-12",
+      "title": "Location & Distance Matching",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-0205",
+        "TASK-0405"
+      ],
+      "objective": "Implement voluntary location collection, exact-location admin/owner access, approximate public use, and distance filters.",
+      "outputs": [
+        "location model",
+        "distance matching"
+      ],
+      "acceptance": [
+        "Exact coordinates are never automatically shown to matched users.",
+        "Location is only collected via voluntary action."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1204",
+      "phase": "PHASE-12",
+      "title": "Advanced Profile & Match Filters",
+      "status": "NOT_STARTED",
+      "priority": "P2",
+      "dependencies": [
+        "TASK-1203",
+        "TASK-0204"
+      ],
+      "objective": "Add interests, advanced age/city/distance/photo filters, profile history UX, and related privacy settings.",
+      "outputs": [
+        "advanced filters",
+        "interests"
+      ],
+      "acceptance": [
+        "Filters integrate with eligibility and coin policy safely."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1205",
+      "phase": "PHASE-12",
+      "title": "Secondary Moderators & Advanced Fraud",
+      "status": "NOT_STARTED",
+      "priority": "P2",
+      "dependencies": [
+        "TASK-0901",
+        "TASK-0805",
+        "TASK-0703"
+      ],
+      "objective": "Expand granular moderator roles, daily rewards, and stronger referral/abuse fraud detection.",
+      "outputs": [
+        "moderator workflows",
+        "fraud controls"
+      ],
+      "acceptance": [
+        "Restricted moderators cannot access forbidden sensitive capabilities."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1301",
+      "phase": "PHASE-13",
+      "title": "Priority Match & Profile Boosts",
+      "status": "NOT_STARTED",
+      "priority": "P3",
+      "dependencies": [
+        "TASK-0704",
+        "TASK-1103"
+      ],
+      "objective": "Add optional priority matchmaking and boost mechanics behind feature flags and ledger-backed charging.",
+      "outputs": [
+        "priority matching",
+        "boosts"
+      ],
+      "acceptance": [
+        "No priority feature bypasses safety/block/eligibility rules."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1302",
+      "phase": "PHASE-13",
+      "title": "Reconnect & Multiple Anonymous Links",
+      "status": "NOT_STARTED",
+      "priority": "P3",
+      "dependencies": [
+        "TASK-0301",
+        "TASK-0501"
+      ],
+      "objective": "Add reconnect requests and multiple independently revocable anonymous links.",
+      "outputs": [
+        "reconnect",
+        "multi-link"
+      ],
+      "acceptance": [
+        "Reconnect creates a new session if a match occurs.",
+        "Links remain independently revocable."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1303",
+      "phase": "PHASE-13",
+      "title": "Premium/Stars Monetization",
+      "status": "NOT_STARTED",
+      "priority": "P3",
+      "dependencies": [
+        "TASK-0701",
+        "TASK-1103"
+      ],
+      "objective": "Add premium/Telegram Stars monetization only with ledger, entitlement, refund, and audit semantics.",
+      "outputs": [
+        "payments/entitlements"
+      ],
+      "acceptance": [
+        "Payments cannot corrupt coin/session state.",
+        "Entitlements are auditable."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1304",
+      "phase": "PHASE-13",
+      "title": "Recommendations, Reputation & Moderation Assistance",
+      "status": "NOT_STARTED",
+      "priority": "P3",
+      "dependencies": [
+        "TASK-0805",
+        "TASK-1104"
+      ],
+      "objective": "Add recommendation scoring, reputation, and automated moderation assistance as advisory systems.",
+      "outputs": [
+        "scoring services"
+      ],
+      "acceptance": [
+        "Automated outputs do not bypass hard privacy/safety/authorization rules."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1305",
+      "phase": "PHASE-13",
+      "title": "Advanced Analytics",
+      "status": "NOT_STARTED",
+      "priority": "P3",
+      "dependencies": [
+        "TASK-1104"
+      ],
+      "objective": "Add deeper funnels, cohort metrics, and operational dashboards after event quality is validated.",
+      "outputs": [
+        "analytics reports"
+      ],
+      "acceptance": [
+        "Metrics are documented and reproducible from event/data sources."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1401",
+      "phase": "PHASE-14",
+      "title": "Critical Acceptance Criteria Verification",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-1002",
+        "TASK-1105"
+      ],
+      "objective": "Verify all 30 PRD critical acceptance criteria with test/evidence references.",
+      "outputs": [
+        "ACCEPTANCE_REPORT.md"
+      ],
+      "acceptance": [
+        "Every criterion is PASS/FAIL/BLOCKED with evidence.",
+        "No production approval while a P0 privacy/session/deletion/admin criterion fails."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1402",
+      "phase": "PHASE-14",
+      "title": "Privacy & Security Review",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-1001",
+        "TASK-1005"
+      ],
+      "objective": "Perform focused review of identity separation, admin access, exports, location, protected chat wording, secrets, and logs.",
+      "outputs": [
+        "SECURITY_REVIEW.md"
+      ],
+      "acceptance": [
+        "No known Telegram identity leakage path remains.",
+        "Sensitive admin actions are permission-checked and audited."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1403",
+      "phase": "PHASE-14",
+      "title": "Concurrency, Recovery & Load Tests",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-1004",
+        "TASK-1003"
+      ],
+      "objective": "Run race, retry, restart, Redis-failure, high-volume chat, match queue, deletion-batch, and ledger tests.",
+      "outputs": [
+        "RELIABILITY_REPORT.md"
+      ],
+      "acceptance": [
+        "Critical races are reproducible and resolved.",
+        "Recovery does not duplicate match/reward/spend effects."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1404",
+      "phase": "PHASE-14",
+      "title": "Operational Runbook & Restore Drill",
+      "status": "NOT_STARTED",
+      "priority": "P1",
+      "dependencies": [
+        "TASK-1102",
+        "TASK-1005"
+      ],
+      "objective": "Document deploy/rollback, migrations, incidents, backup restore, worker recovery, and admin emergency controls.",
+      "outputs": [
+        "RUNBOOK.md"
+      ],
+      "acceptance": [
+        "A clean restore drill is recorded.",
+        "Rollback and incident ownership are explicit."
+      ],
+      "blocker": "",
+      "last_note": ""
+    },
+    {
+      "id": "TASK-1405",
+      "phase": "PHASE-14",
+      "title": "Release Checklist",
+      "status": "NOT_STARTED",
+      "priority": "P0",
+      "dependencies": [
+        "TASK-1401",
+        "TASK-1402",
+        "TASK-1403",
+        "TASK-1404"
+      ],
+      "objective": "Produce final release checklist, unresolved-risk signoff, and production go/no-go decision.",
+      "outputs": [
+        "RELEASE_CHECKLIST.md"
+      ],
+      "acceptance": [
+        "All P0 blockers are closed or explicitly rejected by owner with documented rationale.",
+        "Acceptance, security, reliability and runbook artifacts exist."
+      ],
+      "blocker": "",
+      "last_note": ""
+    }
+  ]
+}

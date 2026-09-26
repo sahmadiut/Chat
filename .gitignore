@@ -32,3 +32,7 @@ yarn-error.log*
 
 # ─── Coverage ───
 coverage/
+
+.agentic/__pycache__/
+
+__pycache__/
